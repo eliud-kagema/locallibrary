@@ -14,7 +14,7 @@
                         <div class="aside-nav collapse">
                           <ul class="nav">
 
-                            <li><a href="#"><span class="icon"><i data-feather="user"></i></span>Author: {{ book.author }}</a></li>
+                            <li><a href="#"><span class="icon"><i data-feather="user"></i></span>{{ book.author }}</a></li>
                             <li><a href="#"><span class="icon"><i data-feather="briefcase"></i></span>{{ book.isbn }}</a></li>
                             <li><a href="#"><span class="icon"><i data-feather="file"></i></span>{{ book.language }}</a></li>
                             <li><a href="#"><span class="icon"><i data-feather="star"></i></span>{{ book.genre.all|join:", " }}</a></li>
@@ -22,6 +22,7 @@
                         </div>
                       </div>
                     </div>
+                    
                     <div class="col-lg-9 email-content">
                       <div class="email-head">
                         <div class="email-head-subject">
@@ -44,7 +45,24 @@
                         <p>{{ book.summary }}</p>
                         <br>
                       </div>
+                      <div style="margin-left:20px;margin-top:20px">
+                        <h4>Copies</h4>
+                      
+                        {% for copy in book.bookinstance_set.all %}
+                        <hr>
+                        <p
+                          class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">
+                          {{ copy.get_status_display }}
+                        </p>
+                        {% if copy.status != 'a' %}
+                        <p><strong>Due to be returned:</strong> {{ copy.due_back }}</p>
+                        {% endif %}
+                        <p><strong>Imprint:</strong> {{ copy.imprint }}</p>
+                        <p class="text-muted"><strong>Id:</strong> {{ copy.id }}</p>
+                        {% endfor %}
+                      </div>
                     </div>
+
                   </div>
                     
                 </div>
